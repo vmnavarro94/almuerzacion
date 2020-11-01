@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, Text, StyleSheet } from 'react-native'
+import { View, Text, StyleSheet, Button } from 'react-native'
 import { useFetch } from '../hooks'
 
 export default ({ navigation }) => {
@@ -12,6 +12,22 @@ export default ({ navigation }) => {
 					<Text>{data._id}</Text>
 					<Text>{data.name}</Text>
 					<Text>{data.desc}</Text>
+					<Button title='Aceptar' onPress={() => {
+						fetch(`https://serverless.vnavarro.vercel.app/api/orders`, {
+							method: 'POST',
+							headers: {
+								'Content-Type': 'application/json'
+							},
+							body: JSON.stringify({
+								meal_id: id,
+								user_id: 'lalala',
+							})
+						}).then(() => {
+							alert('Orden fue generada con exito')
+							navigation.navigate('Meals')
+						})
+					}}/>
+					<Button title='Cancelar' onPress={() => navigation.navigate('Meals')} />
 				</>
 			}
 		</View>
