@@ -1,5 +1,6 @@
 import React from 'react'
-import { Text, View, StyleSheet, TextInput, Button, Alert, AsyncStorage } from 'react-native'
+import { Text, View, StyleSheet, TextInput, Button, Alert } from 'react-native'
+import AsyncStorage from '@react-native-community/async-storage'
 import { useForm } from '../hooks'
 
 export default ({ navigation }) => {
