@@ -1,5 +1,5 @@
 import React from 'react'
-import { Text, View, StyleSheet, TextInput, Button } from 'react-native'
+import { Text, View, StyleSheet, TextInput, Button, Alert } from 'react-native'
 import { useForm } from '../hooks'
 
 export default ({ navigation }) => {
@@ -7,14 +7,32 @@ export default ({ navigation }) => {
 		email: '',
 		password: '',
 	}
-	const onSubmit = values => {
-		console.log(values)
+	const onSubmit = async (values) => {
+		const response = await fetch('https://serverless.vnavarro.vercel.app/api/auth/register', {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'Application/json',
+			},
+			body: JSON.stringify(values),
+		})
+		const text = await response.text()
+		if (text === 'Usuario creado con exito') {
+			return Alert.alert(
+				'Exito',
+				text,
+				[
+					{ text: 'Ir al inicio', onPress: () => navigation.navigate('Login') }
+				]
+			)
+		}
+		Alert.alert('Error', text)
 	}
 	const { suscribe, handleSubmit, inputs } = useForm(initialState, onSubmit)
 	return (
 		<View style={styles.container}>
 			<Text style={styles.title} >Registro</Text>
 			<TextInput 
+				autoCapitalize='none'
 				value={inputs.email} 
 				onChangeText={suscribe('email')} 
 				placeholder='E-mail' 
@@ -22,6 +40,7 @@ export default ({ navigation }) => {
 			/>
 			<TextInput 
 				value={inputs.password} 
+				autoCapitalize='none'
 				onChangeText={suscribe('password')} 
 				placeholder='Contraseña' 
 				style={styles.input} 
